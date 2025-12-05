@@ -1,12 +1,17 @@
 class Solution {
 public:
-    int checkPalindrome(string s, int left, int right){
+    pair<int,int> checkPalindrome(string s, int left, int right){
         int n= s.size();
         int len = 0;
+        int start = 0;
         while(left>=0 and right<n and s[left]==s[right]){
+            if(len<right - left + 1){
+                start = left;
+                len = right - left + 1;
+            }
             right++; left--;
         }
-        return right-left-1;
+        return {start, len};
     }
     string longestPalindrome(string s) {
         // Ques: question constraints? 
@@ -24,19 +29,19 @@ public:
 
         int n = s.size();
         int curr = 0;
-        int start = 0, end = 0;
-        string ans ="";
+        int start = 0, maxLen = 0;
         while(curr<n){
-            int len1 = checkPalindrome(s, curr, curr);
-            int len2 = checkPalindrome(s, curr, curr+1);
-            int len = max(len1, len2);
-            if(len>end-start){
-                start = curr - (len-1)/2;
-                end = curr + (len)/2;
+            auto odd = checkPalindrome(s, curr, curr);
+            auto even = checkPalindrome(s, curr, curr+1);
+            int len = max(odd.second, even.second);
+            if(len>maxLen){
+                maxLen =len;
+                if(len == odd.second)start = odd.first;
+                else start = even.first;
             }
             curr++;
         }
-        return s.substr(start, end - start + 1);
+        return s.substr(start, maxLen);
         
     }
 };
