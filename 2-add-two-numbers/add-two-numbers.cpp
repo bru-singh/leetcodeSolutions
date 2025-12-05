@@ -53,6 +53,7 @@ public:
             ListNode* newNode = new ListNode(carry);
             dummy->next = newNode;
         }
+        // reverse(head);
         return head->next;
     }
 };
