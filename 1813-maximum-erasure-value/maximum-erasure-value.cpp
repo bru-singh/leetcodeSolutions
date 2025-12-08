@@ -23,17 +23,18 @@ public:
         int left = 0, right = 0;
         int maxSum = 0;
         int sum = 0;
-        unordered_set<int> hashSet;
+        // unordered_set<int> hashSet;
+        vector<int> hashSet(100001, 0);
         while(right<n){
             // include the curr num
             sum+=nums[right];
-            while(hashSet.find(nums[right])!=hashSet.end()){
+            hashSet[nums[right]]++;
+            while(hashSet[nums[right]]!=1){
                 sum-=nums[left];
-                hashSet.erase(nums[left]);
+                hashSet[nums[left]]--;
                 left++;
             }
             maxSum = max(maxSum, sum);
-            hashSet.insert(nums[right]);
             right++;
         }
         return maxSum;
