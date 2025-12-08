@@ -39,16 +39,10 @@ public:
         int len = 0;
         int maxLen = -1;
         for(int i=0;i<n;i++){
-            if(prev=='1' or s[i]==prev){
-                len++;
-                hashTable[s[i]-'a'][len]++;
-                prev = s[i];
-            }
-            else {
-                len = 1;
-                hashTable[s[i]-'a'][len]++;
-                prev = s[i];
-            }
+            if(prev=='1' or s[i]==prev)len++;
+            else len = 1;
+            hashTable[s[i]-'a'][len]++;
+            prev = s[i];
         }
         for(int i=0;i<26;i++){
             int cumSum = 0;
