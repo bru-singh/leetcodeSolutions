@@ -9,9 +9,9 @@ public:
         for(int i=0;i<n;i++){
             rightCount[nums[i]]--;
             int specialNum = 2*nums[i];
-            long long left = leftCount[specialNum]%mod;
-            long long right = rightCount[specialNum]%mod;
-            res += 1ll*((left%mod)*(right%mod))%mod;
+            int left = leftCount[specialNum]%mod;
+            int right = rightCount[specialNum]%mod;
+            res = (res + (1ll*left*right)%mod)%mod;
             leftCount[nums[i]]++;
         }
         return res%mod;
