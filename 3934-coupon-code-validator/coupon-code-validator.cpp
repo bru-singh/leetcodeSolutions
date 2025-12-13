@@ -35,10 +35,10 @@ public:
         sort(groc.begin(), groc.end());
         sort(pharma.begin(), pharma.end());
         sort(rest.begin(), rest.end());
-        if(!elec.empty())for(auto it: elec)ans.push_back(it);
-        if(!groc.empty())for(auto it: groc)ans.push_back(it);
-        if(!pharma.empty())for(auto it: pharma)ans.push_back(it);
-        if(!rest.empty())for(auto it: rest)ans.push_back(it);
+        ans.insert(ans.end(), elec.begin(), elec.end());
+        ans.insert(ans.end(), groc.begin(), groc.end());
+        ans.insert(ans.end(), pharma.begin(), pharma.end());
+        ans.insert(ans.end(), rest.begin(), rest.end());
         return ans;
     }
 };
