@@ -9,7 +9,7 @@ public:
         while(right<nums.size()){
             prod*=nums[right];
             count++;
-            while(prod>=k){
+            while(left<=right and prod>=k){
                 prod/=nums[left];
                 left++;
                 count--;
