@@ -1,4 +1,4 @@
-class Solution {
+class Solution1 {
 public:
     int maxProfit(int K, vector<int>& prices) {
         int n = prices.size();
@@ -16,5 +16,27 @@ public:
         }
 
         return dp[0][K][0];
+    }
+};
+// itirative approach from III, without dp
+// so in III what we did was, we had buy1, buy2
+// and p1 and p2
+// and we wnated to maximise p2
+// here instead of 2 we have K total transections, so we can have buy1, buy2,... buyk
+// same p1, p2 ....pk
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        vector<int> buy(k+1, INT_MAX);
+        vector<int> profit(k+1, INT_MIN);
+        profit[0] = 0;
+        for(auto price: prices){
+            for(int i=1;i<=k;i++){
+                buy[i] = min(buy[i], price-profit[i-1]);
+                profit[i] = max(profit[i], price-buy[i]);
+            }
+        }
+
+        return profit[k];
     }
 };
