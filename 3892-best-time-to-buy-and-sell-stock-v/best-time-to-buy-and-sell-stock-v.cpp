@@ -1,45 +1,59 @@
 class Solution {
 public:
-    vector<int> prices;
+    // choice: 
+    // 0: transaction complete: can do both buy or sell. 
+    // 1: prev buy, you can only sell or skip 
+    // 2: prev sell, you can only buy or skip
+
+    // chaing things: 
+    // indx, choice and k
+    // dp[indx][k][choice]
+
+    long long dp[1001][501][3];
     long long mn = -1e14;
-    vector<vector<vector<long long>>> dp;
-    long long f(int i, int k, int state){
-        if(i == prices.size()){
-            return state == 0 ? 0 : mn;
-        }
-        if(dp[i][k][state] != mn) return dp[i][k][state];
-
-        long long p = prices[i];
-        long long profit = mn;
-        // 1) do nothing today
-        profit = max(profit, f(i + 1, k, state));
-
-        // 2) If neither sold nor bought earlier
-        if(state == 0){
-            // start 2 type of transaction
-            // a) buy, losing p
-            profit = max(profit, f(i+1, k, 1) - p);
-            // b) sell, gaining p
-            profit = max(profit, f(i+1, k, 2) + p);
-        }
-        else if(k > 0){ // have transactions left
-            // complete 1 transaction
-            if(state == 1){
-                // already bought then sell incurring profit of p
-                profit = max(profit, f(i+1, k-1, 0) + p);
-                
+    long long recc(vector<int>& prices, int indx, int choice, int k){
+        if(indx==prices.size()){
+            if(choice == 0){
+                return 0;
             }
-            else{
-                // already sold then buy incurring loss of p
-                 profit = max(profit, f(i+1, k-1, 0) - p);
+            return mn;
+        }
+        if(dp[indx][k][choice]!=mn)return dp[indx][k][choice];
+        
+        long long profit = -1e14;
+        profit = max(profit, recc(prices, indx+1, choice, k));
+        if(choice == 0){
+            profit = max(profit, max(
+                        -prices[indx] + recc(prices, indx+1, 1, k), 
+                        prices[indx] + recc(prices, indx+1, 2, k)));
+        }
+        else if(k>0){
+            if(choice == 1){
+                profit = max(profit, 
+                prices[indx] + recc(prices, indx+1, 0, k-1));
+            }
+            else if(choice == 2){
+                profit = max(profit, 
+                -prices[indx] + recc(prices, indx+1, 0, k-1));
             }
         }
-        return dp[i][k][state] = profit;
+        return dp[indx][k][choice]= profit;
     }
-    
     long long maximumProfit(vector<int>& prices, int k) {
-        this->prices = prices;
-        dp.assign(prices.size() + 1, vector<vector<long long>> (k + 1, vector<long long> (3, mn)));
-        return f(0, k, 0);  
+        // at each point, for eadch index we have two point: 
+        // do not do anything
+        // short sell or buy ->
+        // 1. if buy, only can sell in the future
+        // 2. if sell, only can buy in the future
+        // we can proceed recursivily in this and process each of the prices.
+        int n= prices.size();
+        for(int i=0;i<n+1;i++){
+            for(int j=0;j<k+1;j++){
+                for(int choice = 0; choice<3;choice++){
+                    dp[i][j][choice]=-1e14;
+                }
+            }
+        }
+        return recc(prices, 0, 0, k);
     }
 };
