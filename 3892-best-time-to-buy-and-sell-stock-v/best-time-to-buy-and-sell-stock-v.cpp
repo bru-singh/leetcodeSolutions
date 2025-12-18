@@ -1,4 +1,4 @@
-class Solution {
+class Solution1 {
 public:
     // choice: 
     // 0: transaction complete: can do both buy or sell. 
@@ -55,5 +55,63 @@ public:
             }
         }
         return recc(prices, 0, 0, k);
+    }
+};
+// bottoms up approach
+class Solution {
+public:
+    // choice: 
+    // 0: transaction complete: can do both buy or sell. 
+    // 1: prev buy, you can only sell or skip 
+    // 2: prev sell, you can only buy or skip
+
+    // chaing things: 
+    // indx, choice and k
+    // dp[indx][k][choice]
+    long long maximumProfit(vector<int>& prices, int K) {
+        // at each point, for eadch index we have two point: 
+        // do not do anything
+        // short sell or buy ->
+        // 1. if buy, only can sell in the future
+        // 2. if sell, only can buy in the future
+        // we can proceed recursivily in this and process each of the prices.
+        int n= prices.size();
+        long long dp[n+1][K+1][3];
+        // base case: 
+        // dp[n][k][0] = 0;
+        // dp[n][k][1] or dp[n][k][2]=-1e14;
+        for(int i=0;i<=K;i++){
+            dp[n][i][0]=0;
+            dp[n][i][1]= -1e14;
+            dp[n][i][2]= -1e14;
+        }
+        for(int i=n-1;i>=0;i--){
+            for(int k=0;k<=K;k++){
+                // dont take
+                dp[i][k][0] = dp[i+1][k][0];
+                // choice 0
+                if(k>0){
+                    dp[i][k][0] = max(dp[i][k][0],
+                                    max( 
+                                        -prices[i] + dp[i+1][k][1], 
+                                        prices[i] + dp[i+1][k][2]
+                                        )
+                                    );
+                }
+                // dont take
+                dp[i][k][1] = dp[i+1][k][1];
+                // choice 1
+                if(k>0){
+                    dp[i][k][1]=max(dp[i][k][1],prices[i] + dp[i+1][k-1][0]);
+                }
+                // dont take 
+                dp[i][k][2] = dp[i+1][k][2];
+                // choice 2
+                if(k>0){
+                    dp[i][k][2] = max(dp[i][k][2], -prices[i] + dp[i+1][k-1][0]);
+                }
+            }
+        }
+        return dp[0][K][0];
     }
 };
