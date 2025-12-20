@@ -4,13 +4,13 @@ public:
         int cnt =0;
         int n= strs.size(), m = strs[0].size();
         for(int i=0;i<m;i++){
-            string s, t; 
-            for(int j = 0;j<n;j++){
-                s+=strs[j][i];
+            for(int j = 1;j<n;j++){
+                char curr = strs[j][i];
+                char prev = strs[j-1][i];
+                if(curr<prev){
+                    cnt++;break;
+                }
             }
-            t=s;
-            sort(t.begin(), t.end());
-            if(t!=s)cnt++;
         }
         return cnt;
     }
