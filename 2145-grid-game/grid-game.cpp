@@ -10,7 +10,7 @@ public:
         // and then do the same for the second robot
         int n = grid[0].size();
         long long firstRow = accumulate(grid[0].begin(), grid[0].end(), 0ll);
-        long long secondRow = 0, maxSum = LONG_MAX;
+        long long secondRow = 0, maxSum = LLONG_MAX;
         for(int i=0;i<n;i++){
             firstRow -= grid[0][i];
             maxSum = min(maxSum, max(secondRow, firstRow));
