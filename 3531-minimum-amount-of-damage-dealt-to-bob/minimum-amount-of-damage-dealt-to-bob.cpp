@@ -2,7 +2,6 @@ class Solution {
 public:
     long long minDamage(int power, vector<int>& damage, vector<int>& health) {
         for(auto &h: health)h= ceil((double)h/(1.0*power));
-        int totalDam = accumulate(damage.begin(), damage.end(), 0);
         vector<pair<int,int>> arr; 
         for(int i=0;i<damage.size();i++)arr.push_back({damage[i], health[i]});
         sort(arr.begin(), arr.end(), [](pair<int,int> &a, pair<int,int> &b){
@@ -18,8 +17,8 @@ public:
         long long sum = 0;
         long long days = 0;
         for(int i=0;i<arr.size();i++){
-            sum+= arr[i].first*(arr[i].second + days);
             days +=arr[i].second;
+            sum+= arr[i].first*(days);
         }
         return sum;
 
