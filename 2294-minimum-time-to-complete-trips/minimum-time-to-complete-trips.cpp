@@ -21,14 +21,15 @@ public:
         long long ans = 0;
         for(auto it: time){long long i = it;end = max(end, i);}
         end = end*totalTrips*1ll;
-        while(start<end){
+        while(start<=end){
             long long mid = start +(end-start)/2;
             long long trips = tripCompleted(time, mid);
             if(trips>=totalTrips){
-                end = mid;
+                ans = mid;
+                end = mid-1;
             }
             else start = mid+1;
         }
-        return start;
+        return ans;
     }
 };
