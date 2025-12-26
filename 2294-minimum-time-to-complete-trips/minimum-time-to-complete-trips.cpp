@@ -17,8 +17,10 @@ public:
         // t =>totalTrip/(1/time1 + 1/time2.... )
         // or t = totalTrip *(totalProd)/(totalProd/time1 + totalProd/time2....);
 
-        long long start = 0, end = 1e14;
+        long long start = 0, end = -1e14;
         long long ans = 0;
+        for(auto it: time){long long i = it;end = max(end, i);}
+        end = end*totalTrips*1ll;
         while(start<end){
             long long mid = start +(end-start)/2;
             long long trips = tripCompleted(time, mid);
