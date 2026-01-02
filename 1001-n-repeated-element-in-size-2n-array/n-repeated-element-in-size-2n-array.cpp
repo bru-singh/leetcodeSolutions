@@ -27,7 +27,12 @@ public:
         // we will have 2n-3 elements and then the repeating int will be
         // present more than half times for sure, so we can use the moore
         // voting algorithm
-        return votingAlgo(nums);
+        // return votingAlgo(nums);
+
+        // using random numbers comparison
+        int i=0, j =0,n = nums.size();
+        while(nums[i=rand()%n]!=nums[j=rand()%n] or i==j);
+        return nums[i];
 
     }
 };
